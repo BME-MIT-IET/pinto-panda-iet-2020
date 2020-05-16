@@ -5,9 +5,9 @@ name: Pinto Java CI with Gradle
 
 on:
   push:
-    branches: [ master ]
+    branches: [ actions-teszt ]
   pull_request:
-    branches: [ master ]
+    branches: [ actions-teszt ]
 
 jobs:
   build:
@@ -16,11 +16,23 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Set up JDK 1.8
+    - name: JDK 1.8 beállítása
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
-    - name: Grant execute permission for gradlew
+    - name: Futtatási engedély megadása "gradlew"-nek
       run: chmod +x gradlew
-    - name: Build with Gradle
+    - name: Build Gradle futtatása
       run: ./gradlew build
+
+  checkstyle_job:
+    name: Kódolási stílus ellenőrzése
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Stílus ellenőrzés futtatása
+        uses: nikitasavinov/checkstyle-action@master
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          reporter: 'github-pr-review'
