@@ -24,15 +24,3 @@ jobs:
       run: chmod +x gradlew
     - name: Build Gradle futtatása
       run: ./gradlew build
-
-  checkstyle_job:
-    name: Kódolási stílus ellenőrzése
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Stílus ellenőrzés futtatása
-        uses: nikitasavinov/checkstyle-action@master
-        with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          reporter: 'github-pr-review'
