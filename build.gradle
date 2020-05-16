@@ -1,6 +1,8 @@
 apply plugin: "idea"
 apply plugin: "java"
 apply plugin: "maven-publish"
+apply plugin: "jacoco"
+
 
 wrapper() {
 	gradleVersion = '6.4'
@@ -69,3 +71,5 @@ dependencies {
 tasks.withType(Test) {
 	systemProperties = System.getProperties()
 }
+
+
