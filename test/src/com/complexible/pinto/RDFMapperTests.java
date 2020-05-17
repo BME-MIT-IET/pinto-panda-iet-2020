@@ -30,6 +30,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.common.hash.Hashing;
+import org.junit.Assume;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.openrdf.model.Literal;
@@ -43,7 +44,6 @@ import org.openrdf.model.vocabulary.XMLSchema;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static org.junit.Assert.assertEquals;
@@ -713,15 +713,19 @@ public class RDFMapperTests {
 		assertEquals(UUID.fromString("0110f311-964b-440d-b772-92c621c5d1e4"), aResult);
 	}
 
+
+
 	@Test
 	public void testWriteMap() throws Exception {
+		Assume.assumeTrue(UTCChecker.isSystemUTC());
+		
 		final ClassWithMap aObj = new ClassWithMap();
 
 		aObj.mMap = Maps.newLinkedHashMap();
 
 		aObj.mMap.put("bob", new Person("Bob the tester"));
 		aObj.mMap.put(1L, "the size of something");
-		aObj.mMap.put(1426361082470L, 57.4);
+		aObj.mMap.put(new Date(1426361082470L), 57.4);
 		aObj.mMap.put(new Person("another person"), new Company("The company"));
 
 		final Model aGraph = RDFMapper.builder()
@@ -736,13 +740,15 @@ public class RDFMapperTests {
 
 	@Test
 	public void testReadMap() throws Exception {
+		Assume.assumeTrue(UTCChecker.isSystemUTC());
+
 		final ClassWithMap aExpected = new ClassWithMap();
 
 		aExpected.mMap = Maps.newLinkedHashMap();
 
 		aExpected.mMap.put("bob", new Person("Bob the tester"));
 		aExpected.mMap.put(1L, "the size of something");
-		aExpected.mMap.put(1426361082470L, 57.4);
+		aExpected.mMap.put(new Date(1426361082470L), 57.4);
 		aExpected.mMap.put(new Person("another person"), new Company("The company"));
 
 		final Model aGraph = ModelIO.read(Files3.classPath("/data/map.nt").toPath());
