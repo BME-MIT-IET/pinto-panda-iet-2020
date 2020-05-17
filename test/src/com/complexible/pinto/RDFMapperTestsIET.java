@@ -4,6 +4,7 @@ import com.complexible.common.openrdf.model.ModelIO;
 import com.complexible.common.openrdf.vocabulary.FOAF;
 import com.complexible.pinto.impl.IdentifiableImpl;
 import com.google.common.collect.Maps;
+import org.junit.Rule;
 import org.junit.Test;
 import org.openrdf.model.Model;
 import org.openrdf.model.Resource;
@@ -13,13 +14,23 @@ import org.openrdf.model.util.Models;
 import java.io.File;
 import java.net.URI;
 import java.sql.Time;
-import java.util.Date;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
 public class RDFMapperTestsIET {
+
+    @Rule
+    public ConditionalIgnoreRule rule = new ConditionalIgnoreRule();
+
+    public class NotCorrectTimeZone implements ConditionalIgnoreRule.IgnoreCondition {
+        public boolean isSatisfied() {
+            Calendar now = Calendar.getInstance();
+            TimeZone timeZone = now.getTimeZone();
+            return !(timeZone.getRawOffset() == 3600000);
+        }
+    }
+
 
     @Test
     public void testRDFMapper_newInstance_noConstructor() {
@@ -95,7 +106,10 @@ public class RDFMapperTestsIET {
     }
 
     @Test
+    @ConditionalIgnoreRule.ConditionalIgnore(condition = NotCorrectTimeZone.class)
     public void testWriteTime() throws Exception{
+
+
         final RDFMapperTests.ClassWithMap aObj = new RDFMapperTests.ClassWithMap();
 
         aObj.mMap = Maps.newLinkedHashMap();
@@ -113,6 +127,7 @@ public class RDFMapperTestsIET {
     }
 
     @Test
+    @ConditionalIgnoreRule.ConditionalIgnore(condition = NotCorrectTimeZone.class)
     public void testReadTime() throws Exception{
         final RDFMapperTests.ClassWithMap aExpected = new RDFMapperTests.ClassWithMap();
 
@@ -271,4 +286,6 @@ public class RDFMapperTestsIET {
             }
         }
     }
+
+
 }
