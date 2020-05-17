@@ -717,7 +717,7 @@ public class RDFMapperTests {
 
 	@Test
 	public void testWriteMap() throws Exception {
-		Assume.assumeTrue(UTCChecker.isSystemUTC());
+		Assume.assumeTrue(UTCChecker.isSystemUTCPlusOne());
 		
 		final ClassWithMap aObj = new ClassWithMap();
 
@@ -740,7 +740,7 @@ public class RDFMapperTests {
 
 	@Test
 	public void testReadMap() throws Exception {
-		Assume.assumeTrue(UTCChecker.isSystemUTC());
+		Assume.assumeTrue(UTCChecker.isSystemUTCPlusOne());
 
 		final ClassWithMap aExpected = new ClassWithMap();
 
