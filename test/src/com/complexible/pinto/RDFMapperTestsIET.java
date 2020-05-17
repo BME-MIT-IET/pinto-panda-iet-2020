@@ -1,7 +1,9 @@
 package com.complexible.pinto;
 
 import com.complexible.common.openrdf.model.ModelIO;
+import com.complexible.common.openrdf.vocabulary.FOAF;
 import com.complexible.pinto.impl.IdentifiableImpl;
+import com.google.common.collect.Maps;
 import org.junit.Test;
 import org.openrdf.model.Model;
 import org.openrdf.model.Resource;
@@ -10,6 +12,9 @@ import org.openrdf.model.util.Models;
 
 import java.io.File;
 import java.net.URI;
+import java.sql.Time;
+import java.util.Date;
+import java.util.Map;
 import java.util.Objects;
 
 import static org.junit.Assert.*;
@@ -43,17 +48,95 @@ public class RDFMapperTestsIET {
         aObj.id(SimpleValueFactory.getInstance().createIRI("tag:complexible:pinto:3d1c9ece37c3f9ee6068440cf9a383cc"));
 
         Model aGraph = aMapper.writeValue(aObj);
-        System.out.println(aGraph);
 
         Model aExpected = ModelIO.read(new File(getClass().getResource("/data/extended_primitives.nt").toURI()).toPath());
-        System.out.println(aExpected);
 
         assertEquals(aExpected, aGraph);
         assertTrue(Models.isomorphic(aGraph, aExpected));
     }
 
+    @Test
+    public void testReadPrimitivesExtended() throws Exception {
+        Model aGraph = ModelIO.read(new File(getClass().getResource("/data/extended_primitives.nt").toURI()).toPath());
 
-    public class ClassWithMissedPrimitives implements Identifiable {
+        RDFMapper aMapper = RDFMapper.create();
+
+        final ClassWithMissedPrimitives aResult = aMapper.readValue(aGraph, ClassWithMissedPrimitives.class);
+
+        ClassWithMissedPrimitives aExpected = new ClassWithMissedPrimitives();
+        aExpected.setString("str value");
+        aExpected.setInt(8);
+        aExpected.setURI(java.net.URI.create("urn:any"));
+        aExpected.setFloat(4.5f);
+        aExpected.setDouble(20.22);
+        aExpected.setChar('o');
+        aExpected.setShort((short)21);
+        aExpected.setByte((byte)32);
+
+        assertEquals(aExpected, aResult);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testWritePrimitivesInvalidUri() throws Exception {
+        RDFMapper aMapper = RDFMapper.create();
+
+        ClassWithMissedPrimitives aObj = new ClassWithMissedPrimitives();
+        aObj.setString("str value");
+        aObj.setInt(8);
+        aObj.setURI(java.net.URI.create("invaliduri/%():"));
+        aObj.setFloat(4.5f);
+        aObj.setDouble(20.22);
+        aObj.setChar('o');
+        aObj.setShort((short)21);
+        aObj.setByte((byte)32);
+        aObj.id(SimpleValueFactory.getInstance().createIRI("tag:complexible:pinto:3d1c9ece37c3f9ee6068440cf9a383cc"));
+
+        Model aGraph = aMapper.writeValue(aObj);
+    }
+
+    @Test
+    public void testWriteTime() throws Exception{
+        final RDFMapperTests.ClassWithMap aObj = new RDFMapperTests.ClassWithMap();
+
+        aObj.mMap = Maps.newLinkedHashMap();
+
+        aObj.mMap.put(1L, "the size of something");
+        aObj.mMap.put(new Time(5, 45, 26), 57.4);
+
+        final Model aGraph = RDFMapper.builder()
+                .build()
+                .writeValue(aObj);
+
+        final Model aExpected = ModelIO.read(RDFMapperTests.Files3.classPath("/data/map_with_time.nt").toPath());
+
+        assertTrue(Models.isomorphic(aGraph, aExpected));
+    }
+
+    @Test
+    public void testReadTime() throws Exception{
+        final RDFMapperTests.ClassWithMap aExpected = new RDFMapperTests.ClassWithMap();
+
+        aExpected.mMap = Maps.newLinkedHashMap();
+
+        aExpected.mMap.put(1L, "the size of something");
+        aExpected.mMap.put(new Time(5, 45, 26), 57.4);
+
+        final Model aGraph = ModelIO.read(RDFMapperTests.Files3.classPath("/data/map_with_time.nt").toPath());
+
+        assertEquals(aExpected, RDFMapper.builder()
+                .build()
+                .readValue(aGraph, RDFMapperTests.ClassWithMap.class,
+                        SimpleValueFactory.getInstance().createIRI("tag:complexible:pinto:537dd244e15d548ae9ed2e07aab97a9d")));
+    }
+
+
+
+
+
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////
+
+    static public class ClassWithMissedPrimitives implements Identifiable {
         private String mString;
         private int mInt;
         private float mFloat;
@@ -155,5 +238,35 @@ public class RDFMapperTestsIET {
 
         public short getShort() {return mShort;}
         public void setShort(final short theShort) {mShort = theShort;}
+    }
+
+    public static final class ClassWithMap {
+        private Map<Object, Object> mMap;
+
+        public Map<Object, Object> getMap() {
+            return mMap;
+        }
+
+        public void setMap(final Map<Object, Object> theMap) {
+            mMap = theMap;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hashCode(mMap);
+        }
+
+        @Override
+        public boolean equals(final Object theObj) {
+            if (theObj == this) {
+                return true;
+            }
+            else if (theObj instanceof RDFMapperTests.ClassWithMap) {
+                return Objects.equals(mMap, ((RDFMapperTests.ClassWithMap) theObj).mMap);
+            }
+            else {
+                return false;
+            }
+        }
     }
 }

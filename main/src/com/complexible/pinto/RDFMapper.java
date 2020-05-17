@@ -411,8 +411,11 @@ public final class RDFMapper {
 			}
 		}
 
-		final Resource aId = id(theValue);
-
+		Resource aId = id(theValue);
+		System.out.println(theValue);
+		if (theValue== byte.class) {
+			System.out.println("found byte");
+		}
 		final IRI aType = getType(theValue);
 
 		try {
@@ -789,6 +792,9 @@ public final class RDFMapper {
 		}
 		else if (Date.class.isInstance(theObj)) {
 			return mValueFactory.createLiteral(Dates2.datetimeISO(Date.class.cast(theObj)), XMLSchema.DATETIME);
+		}
+		else if (Byte.class.isInstance(theObj)) {
+			return mValueFactory.createLiteral(Byte.class.cast(theObj).byteValue());
 		}
 		else if (String.class.isInstance(theObj)) {
 			if (theAnnotation != null && !theAnnotation.language().equals("")) {

@@ -763,6 +763,7 @@ public class RDFMapperTests {
 		aExpected.mMap = Maps.newLinkedHashMap();
 
 		aExpected.mMap.put("bob", new Person("Bob the tester"));
+		aExpected.mMap.put("bob", new Person("Bob the tester"));
 		aExpected.mMap.put(1L, "the size of something");
 		aExpected.mMap.put(new Date(1426361082470L), 57.4);
 		aExpected.mMap.put(new Person("another person"), new Company("The company"));
@@ -1531,7 +1532,7 @@ public class RDFMapperTests {
 	}
 
 	public static final class ClassWithMap {
-		private Map<Object, Object> mMap;
+		Map<Object, Object> mMap;
 
 		public Map<Object, Object> getMap() {
 			return mMap;

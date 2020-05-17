@@ -1,5 +1,5 @@
 <tag:complexible:pinto:3d1c9ece37c3f9ee6068440cf9a383cc> <tag:complexible:pinto:string> "str value"^^<http://www.w3.org/2001/XMLSchema#string> .
-<tag:complexible:pinto:3d1c9ece37c3f9ee6068440cf9a383cc> <tag:complexible:pinto:byte> <tag:complexible:pinto:6364d3f0f495b6ab9dcf8d3b5c6e0b01> .
+<tag:complexible:pinto:3d1c9ece37c3f9ee6068440cf9a383cc> <tag:complexible:pinto:byte> "32"^^<http://www.w3.org/2001/XMLSchema#byte> .
 <tag:complexible:pinto:3d1c9ece37c3f9ee6068440cf9a383cc> <tag:complexible:pinto:double> "20.22"^^<http://www.w3.org/2001/XMLSchema#double> .
 <tag:complexible:pinto:3d1c9ece37c3f9ee6068440cf9a383cc> <tag:complexible:pinto:char> "o"^^<http://www.w3.org/2001/XMLSchema#string> .
 <tag:complexible:pinto:3d1c9ece37c3f9ee6068440cf9a383cc> <tag:complexible:pinto:short> "21"^^<http://www.w3.org/2001/XMLSchema#short> .

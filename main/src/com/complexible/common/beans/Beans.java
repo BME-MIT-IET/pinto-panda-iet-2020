@@ -46,7 +46,7 @@ public final class Beans {
 		return (Boolean.class.isInstance(theObj) || Integer.class.isInstance(theObj) || Long.class.isInstance(theObj)
 		        || Short.class.isInstance(theObj) || Double.class.isInstance(theObj) || Float.class.isInstance(theObj)
 		        || Date.class.isInstance(theObj) || String.class.isInstance(theObj) || Character.class.isInstance(theObj)
-		        || java.net.URI.class.isInstance(theObj));
+		        || java.net.URI.class.isInstance(theObj)) || Byte.class.isInstance(theObj);
 	}
 
 	/**
@@ -60,7 +60,7 @@ public final class Beans {
 		return (Boolean.class.equals(theObj) || Integer.class.equals(theObj) || Long.class.equals(theObj)
 		        || Short.class.equals(theObj) || Double.class.equals(theObj) || Float.class.equals(theObj)
 		        || Date.class.equals(theObj) || String.class.equals(theObj) || Character.class.equals(theObj)
-		        || java.net.URI.class.equals(theObj));
+		        || java.net.URI.class.equals(theObj)) || Byte.class.equals(theObj);
 	}
 
 	/**
