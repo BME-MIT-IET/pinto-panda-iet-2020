@@ -43,16 +43,8 @@ import org.openrdf.model.vocabulary.XMLSchema;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Collection;
-import java.util.Date;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
-import java.util.SortedSet;
-import java.util.UUID;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -729,7 +721,7 @@ public class RDFMapperTests {
 
 		aObj.mMap.put("bob", new Person("Bob the tester"));
 		aObj.mMap.put(1L, "the size of something");
-		aObj.mMap.put(new Date(1426361082470L), 57.4);
+		aObj.mMap.put(1426361082470L, 57.4);
 		aObj.mMap.put(new Person("another person"), new Company("The company"));
 
 		final Model aGraph = RDFMapper.builder()
@@ -737,8 +729,9 @@ public class RDFMapperTests {
 		                              .build()
 		                              .writeValue(aObj);
 
-		assertTrue(Models.isomorphic(aGraph,
-		                            ModelIO.read(Files3.classPath("/data/map.nt").toPath())));
+		final Model inFile=ModelIO.read(Files3.classPath("/data/map.nt").toPath());
+
+		assertTrue(Models.isomorphic(aGraph,inFile));
 	}
 
 	@Test
@@ -749,7 +742,7 @@ public class RDFMapperTests {
 
 		aExpected.mMap.put("bob", new Person("Bob the tester"));
 		aExpected.mMap.put(1L, "the size of something");
-		aExpected.mMap.put(new Date(1426361082470L), 57.4);
+		aExpected.mMap.put(1426361082470L, 57.4);
 		aExpected.mMap.put(new Person("another person"), new Company("The company"));
 
 		final Model aGraph = ModelIO.read(Files3.classPath("/data/map.nt").toPath());
