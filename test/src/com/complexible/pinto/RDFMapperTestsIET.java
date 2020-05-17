@@ -134,6 +134,8 @@ public class RDFMapperTestsIET {
 
 
 
+
+
     //////////////////////////////////////////////////////////////////////////////////////////////////
 
     static public class ClassWithMissedPrimitives implements Identifiable {
