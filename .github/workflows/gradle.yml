@@ -5,9 +5,9 @@ name: Pinto Java CI with Gradle
 
 on:
   push:
-    branches: [ actions-beuzemelese ]
+    branches: [ master ]
   pull_request:
-    branches: [ actions-beuzemelese ]
+    branches: [ master ]
 
 jobs:
   build:
