@@ -27,7 +27,7 @@ public class RDFMapperTestsIET {
         public boolean isSatisfied() {
             Calendar now = Calendar.getInstance();
             TimeZone timeZone = now.getTimeZone();
-            return !(timeZone.getRawOffset() == 3600000);
+            return !(timeZone.getRawOffset() == (60*60*1000));
         }
     }
 
