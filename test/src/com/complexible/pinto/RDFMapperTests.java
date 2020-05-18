@@ -30,6 +30,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.common.hash.Hashing;
+import org.junit.Assume;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.openrdf.model.Literal;
@@ -736,8 +737,12 @@ public class RDFMapperTests {
 		assertEquals(UUID.fromString("0110f311-964b-440d-b772-92c621c5d1e4"), aResult);
 	}
 
+
+
 	@Test
 	public void testWriteMap() throws Exception {
+		Assume.assumeTrue(UTCChecker.isSystemUTCPlusOne());
+		
 		final ClassWithMap aObj = new ClassWithMap();
 
 		aObj.mMap = Maps.newLinkedHashMap();
@@ -752,12 +757,15 @@ public class RDFMapperTests {
 		                              .build()
 		                              .writeValue(aObj);
 
-		assertTrue(Models.isomorphic(aGraph,
-		                            ModelIO.read(Files3.classPath("/data/map.nt").toPath())));
+		final Model inFile=ModelIO.read(Files3.classPath("/data/map.nt").toPath());
+
+		assertTrue(Models.isomorphic(aGraph,inFile));
 	}
 
 	@Test
 	public void testReadMap() throws Exception {
+		Assume.assumeTrue(UTCChecker.isSystemUTCPlusOne());
+
 		final ClassWithMap aExpected = new ClassWithMap();
 
 		aExpected.mMap = Maps.newLinkedHashMap();
