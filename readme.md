@@ -61,7 +61,7 @@ public static final class Person {
             return true;
         }
         else if (theObj instanceof Person) {
-            return Objects.equal(mName, ((Person) theObj).mName);
+            return Objects.equals(mName, ((Person) theObj).mName);
         }
         else {
             return false;
