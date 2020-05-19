@@ -44,6 +44,45 @@ repositories {
 	}
 }
 
+buildscript {
+	repositories {
+		maven {
+			url "https://plugins.gradle.org/m2/"
+		}
+	}
+	dependencies {
+		classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.8"
+	}
+}
+
+apply plugin: 'jacoco'
+
+jacoco {
+	toolVersion = "0.8.5"
+	reportsDir = file("$buildDir/jacocoReportDir")
+}
+
+jacocoTestReport {
+	reports {
+		xml.enabled true
+	}
+}
+
+apply plugin: "org.sonarqube"
+
+plugins.withType(JacocoPlugin) {
+	tasks["test"].finalizedBy 'jacocoTestReport'
+}
+
+sonarqube {
+	properties {
+		property "sonar.projectKey", "BME-MIT-IET_pinto-panda-iet-2020"
+		property "sonar.organization", "bme-mit-iet-org"
+		property "sonar.host.url", "https://sonarcloud.io"
+		property "sonar.login", "73086d4f2425c12b6052a95f78de32188892e3f3"
+	}
+}
+
 dependencies {
 	implementation (group: "com.google.guava", name: "guava", version: "18.0") {
 		exclude group: "com.google.code.findbugs"
