@@ -412,10 +412,7 @@ public final class RDFMapper {
 		}
 
 		Resource aId = id(theValue);
-		System.out.println(theValue);
-		if (theValue== byte.class) {
-			System.out.println("found byte");
-		}
+		
 		final IRI aType = getType(theValue);
 
 		try {
