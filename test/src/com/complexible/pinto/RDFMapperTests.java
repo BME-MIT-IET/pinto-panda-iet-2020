@@ -637,11 +637,35 @@ public class RDFMapperTests {
 	@Test
 	@Ignore
 	public void testReadEnumSet() throws Exception {
+
 	}
 
 	@Test
 	@Ignore
 	public void testWriteEnumSet() throws Exception {
+		ClassWithEnumSet aObj = new ClassWithEnumSet();
+
+
+		EnumSet<TestEnum> aEnumSet = EnumSet.of(TestEnum.Foo, TestEnum.Bar, TestEnum.Baz);
+		aObj.id(SimpleValueFactory.getInstance().createIRI("urn:testWriteEnum"));
+		aObj.setEnums(aEnumSet);
+
+
+		Model aGraph = RDFMapper.create().writeValue(aObj);
+
+		Optional<Statement> aStatement = aGraph.stream().filter(Statements.predicateIs(SimpleValueFactory.getInstance().createIRI(RDFMapper.DEFAULT_NAMESPACE + "enums"))).findFirst();
+		assertTrue("should have found the triple", aStatement.isPresent());
+
+		Resource aResult = (Resource) aStatement.get().getObject();
+		System.out.println(aResult);
+
+		System.out.println(aObj);
+
+		final ClassWithEnumSet aReadResult = RDFMapper.create().readValue(aGraph, ClassWithEnumSet.class,
+				SimpleValueFactory.getInstance().createIRI("tag:complexible:pinto:1356c67d7ad1638d816bfb822dd2c25d"));
+
+		assertEquals(aObj.getEnums(), aReadResult.getEnums());
+
 	}
 
 	@Test
@@ -963,7 +987,8 @@ public class RDFMapperTests {
 		}
 	}
 
-	public static class ClassWithEnumSet {
+	public static class ClassWithEnumSet implements Identifiable {
+
 		private EnumSet<TestEnum> mEnums = EnumSet.noneOf(TestEnum.class);
 
 		public EnumSet<TestEnum> getEnums() {
@@ -972,6 +997,18 @@ public class RDFMapperTests {
 
 		public void setEnums(final EnumSet<TestEnum> theEnums) {
 			mEnums = theEnums;
+		}
+
+		private Identifiable mIdentifiable = new IdentifiableImpl();
+
+		@Override
+		public Resource id() {
+			return mIdentifiable.id();
+		}
+
+		@Override
+		public void id(final Resource theResource) {
+			mIdentifiable.id(theResource);
 		}
 
 		@Override
@@ -1502,7 +1539,7 @@ public class RDFMapperTests {
 	}
 
 	public static final class ClassWithMap {
-		private Map<Object, Object> mMap;
+		Map<Object, Object> mMap;
 
 		public Map<Object, Object> getMap() {
 			return mMap;

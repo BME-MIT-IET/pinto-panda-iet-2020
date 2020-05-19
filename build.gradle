@@ -1,6 +1,8 @@
 apply plugin: "idea"
 apply plugin: "java"
 apply plugin: "maven-publish"
+apply plugin: "jacoco"
+
 
 wrapper() {
 	gradleVersion = '6.4'
@@ -40,8 +42,12 @@ targetCompatibility = '1.8'
 repositories {
 	mavenCentral()
 	maven {
+		url "https://mvnrepository.com/artifact/"
+	}
+	maven {
 		url "https://maven.stardog.com"
 	}
+	jcenter()
 }
 
 dependencies {
@@ -63,9 +69,17 @@ dependencies {
 	implementation "org.slf4j:slf4j-api:1.7.7"
 	implementation "org.slf4j:slf4j-jdk14:1.7.7"
 
-	implementation 'junit:junit:4.11'
+	implementation 'junit:junit:4.12'
+
+	testImplementation "org.mockito:mockito-core:2.8.0"
+	testImplementation 'org.powermock:powermock-api-mockito2:1.7.0RC2'
+	testImplementation 'org.powermock:powermock-module-junit4:1.7.0'
+	testImplementation 'org.powermock:powermock-core:1.7.0'
+	testImplementation 'org.powermock:powermock-module-junit4-rule:1.7.0'
 }
 
 tasks.withType(Test) {
 	systemProperties = System.getProperties()
 }
+
+
