@@ -2,6 +2,7 @@ package com.complexible.pinto.java;
 
 import com.complexible.common.openrdf.model.ModelIO;
 import com.complexible.pinto.RDFMapper;
+import com.complexible.pinto.java.beans.Dog;
 import com.complexible.pinto.java.beans.Person;
 import com.complexible.pinto.java.helper.ModelTestHelper;
 import io.cucumber.java.en.And;
@@ -9,46 +10,26 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
 import org.openrdf.model.Model;
-import org.openrdf.rio.RDFFormat;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Path;
 
 import static org.junit.Assert.*;
 
 public class Stepdefs {
-    private String name;
     private Model model;
     private Person person;
+    private Object testClass;
 
-    @Given("I use the Person class")
-    public void use_person_class() {
-        // Ez most nem baj, hogy nem csinál semmit, majd factory-t kéne rá alkalmazni
-    }
-
-    @Given("the name of a person is {string}")
-    public void name_of_person_is(String name) {
-        this.name = name;
-    }
-
-    @When("I serialize the person")
-    public void i_serialize_the_person() {
-        this.model = RDFMapper.create().writeValue((new Person(name)));
-    }
-
-    @Then("I should see the {string} name in a {string} tag")
-    public void i_should_see(String expectedName, String expectedAttribute) {
-        String actualTag = ModelTestHelper.getTag(model);
-        String actualName = ModelTestHelper.getName(model);
-        assertEquals(expectedName, actualName);
+    @Then("I should see the {string} in a {string} tag")
+    public void iShouldSeeTheAttributeInATag(String expectedBreed, String expectedAttribute) {
+        String actualTag = ModelTestHelper.getAttribute(model, expectedAttribute);
+        String actualName = ModelTestHelper.getValue(model);
+        assertEquals(expectedBreed, actualName);
         assertEquals(expectedAttribute, actualTag);
     }
 
@@ -60,7 +41,6 @@ public class Stepdefs {
     @When("I deserialize the object")
     public void iDeserializeTheObject() {
         person = RDFMapper.create().readValue(model, Person.class);
-        //System.out.println(person.getName());
     }
 
     @Then("I should get an object of type {string}")
@@ -72,7 +52,6 @@ public class Stepdefs {
     public void iShouldSeeTheIs(String expectedAttribute, String expectedValue) throws NoSuchFieldException, NoSuchMethodException, InvocationTargetException {
         Field field = person.getClass().getDeclaredField("name");
         field.setAccessible(true);
-        //Object value = field.get(person);
         String str = field.getName();
 
         Method method = person.getClass().getMethod("get" + str.substring(0, 1).toUpperCase() + str.substring(1));
@@ -85,6 +64,30 @@ public class Stepdefs {
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
-
     }
+
+    @Given("I use the {string} class")
+    public void iUseTheGivenClass(String creatableClass) {
+        try {
+            this.testClass = Class.forName("com.complexible.pinto.java.beans." + creatableClass).getConstructor().newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @And("the {string} of the {string} is {string}")
+    public void theAttributeOfTheObjectIs(String attribute, String objectName, String value) {
+        try {
+            Method method = testClass.getClass().getDeclaredMethod("set" + attribute.substring(0, 1).toUpperCase() + attribute.substring(1), String.class);
+            method.invoke(testClass, value);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @When("I serialize the {string}")
+    public void iSerializeTheObject(String objectName) {
+        this.model = RDFMapper.create().writeValue(testClass);
+    }
+
 }

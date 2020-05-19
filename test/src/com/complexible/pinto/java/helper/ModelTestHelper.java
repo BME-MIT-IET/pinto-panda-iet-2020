@@ -6,15 +6,16 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ModelTestHelper {
-    public static String getTag(Model model) {
+    public static String getAttribute(Model model, String attributeName) {
         List<String> split = (Arrays.asList(model.predicates().toArray()[0].toString().split(":")));
-        if (split.contains("name")) {
-            return split.get(split.indexOf("name"));
+        if (split.contains(attributeName)) {
+            return split.get(split.indexOf(attributeName));
         }
         return "";
 
     }
-    public static String getName(Model model) {
+    public static String getValue(Model model) {
         return model.objectValue().get().stringValue();
     }
+
 }
