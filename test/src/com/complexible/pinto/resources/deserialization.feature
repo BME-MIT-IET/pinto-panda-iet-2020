@@ -4,12 +4,13 @@ Feature: Deserialization
   I want to deserialize these objects into Java classes
 
   Scenario Outline: Example class is read successfully
-    Given I have an NTriple of a Person object in "<filePath>"
-    And I use the "Person" class
+    Given I have an NTriple of a "<className>" object in "<filePath>"
+    And I use the "<className>" class
     When I deserialize the object
-    Then I should get an object of type "<class>"
+    Then I should get an object of type "<className>"
     And I should see the "<attribute>" is "<value>"
 
     Examples:
-      | filePath | class | attribute | value |
-      | /bdddata/person.txt |   Person    |     name     |    Michael Grove   |
+      | className | filePath            | attribute | value            |
+      | Person    | /bdddata/person.txt | name      | Michael Grove    |
+      | Dog       | /bdddata/dog.txt    | breed     | Golden retriever |
