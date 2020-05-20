@@ -13,7 +13,6 @@ public class Velociraptor {
         this.name = name;
     }
 
-
     public Integer getVelocity() {
         return velocity;
     }

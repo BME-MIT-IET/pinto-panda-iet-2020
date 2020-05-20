@@ -58,9 +58,8 @@ public class Stepdefs {
         String str = field.getName();
 
         Method method = testClass.getClass().getMethod("get" + str.substring(0, 1).toUpperCase() + str.substring(1));
-        System.out.println(method.getName());
+
         assertEquals(expectedAttribute, field.getName());
-        //assertEquals(expectedValue, method.invoke(testClass));
 
         try {
             assertEquals(expectedValue, method.invoke(testClass));
