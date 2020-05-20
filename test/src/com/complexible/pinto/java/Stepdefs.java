@@ -97,6 +97,26 @@ public class Stepdefs {
         }
     }
 
+    @And("the {string} of the {string} is {string} of type Boolean")
+    public void theAttributeOfTheObjectIsOfTypeBoolean(String attribute, String objectName, String value) {
+        try {
+            Method method = testClass.getClass().getDeclaredMethod("set" + attribute.substring(0, 1).toUpperCase() + attribute.substring(1), Boolean.class);
+            method.invoke(testClass, Boolean.parseBoolean(value));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @And("the {string} of the {string} is {string} of type Float")
+    public void theAttributeOfTheObjectIsOfTypeFloat(String attribute, String objectName, String value) {
+        try {
+            Method method = testClass.getClass().getDeclaredMethod("set" + attribute.substring(0, 1).toUpperCase() + attribute.substring(1), Float.class);
+            method.invoke(testClass, Float.parseFloat(value));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     @When("I serialize the {string}")
     public void iSerializeTheObject(String objectName) {
         this.model = RDFMapper.create().writeValue(testClass);

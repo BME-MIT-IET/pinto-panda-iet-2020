@@ -47,7 +47,6 @@ public class ModelTestHelper {
     private static String findValue(Object o) {
         Matcher matcher = pattern.matcher(o.toString());
         if (matcher.find()) {
-            System.out.println(matcher.group(1));
             return matcher.group(1);
         }
         return "";
