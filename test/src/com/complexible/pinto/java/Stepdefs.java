@@ -52,7 +52,7 @@ public class Stepdefs {
     }
 
     @And("I should see the {string} is {string}")
-    public void iShouldSeeTheIs(String expectedAttribute, String expectedValue) throws NoSuchFieldException, NoSuchMethodException, InvocationTargetException {
+    public void iShouldSeeTheAttributeIs(String expectedAttribute, String expectedValue) throws NoSuchFieldException, NoSuchMethodException, InvocationTargetException {
         Field field = testClass.getClass().getDeclaredField(expectedAttribute);
         field.setAccessible(true);
         String str = field.getName();
@@ -62,7 +62,7 @@ public class Stepdefs {
         assertEquals(expectedAttribute, field.getName());
 
         try {
-            assertEquals(expectedValue, method.invoke(testClass));
+            assertEquals(expectedValue, method.invoke(testClass).toString());
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }

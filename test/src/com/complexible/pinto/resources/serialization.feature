@@ -14,7 +14,7 @@ Feature: Serialization
       | Person    | Michael Grove    | name      |
       | Dog       | Golden retriever | breed     |
 
-  Scenario: Example class is serialized successfully
+  Scenario: Example class with multiple fields is serialized successfully
     Given I use the "Velociraptor" class
     And the "name" of the "Velociraptor" is "Pityu" of type String
     And the "velocity" of the "Velociraptor" is "7" of type Integer
