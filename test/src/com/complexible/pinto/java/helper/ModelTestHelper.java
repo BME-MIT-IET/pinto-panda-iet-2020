@@ -1,9 +1,16 @@
 package com.complexible.pinto.java.helper;
 
+import com.complexible.pinto.annotations.RdfId;
+import com.google.common.hash.Hasher;
+import com.google.common.hash.Hashing;
 import io.cucumber.datatable.internal.difflib.StringUtills;
 import io.cucumber.java.sl.In;
+import org.apache.commons.io.Charsets;
 import org.openrdf.model.Model;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -50,6 +57,39 @@ public class ModelTestHelper {
             return matcher.group(1);
         }
         return "";
+    }
+
+    public static String getHash(Model model) {
+        Object[] objects = model.subjects().toArray();
+        String[] split = objects[0].toString().split(":");
+        return split[split.length - 1];
+    }
+
+    public static String getExpectedHash(Object testClass) throws NoSuchMethodException {
+        Field[] fields = testClass.getClass().getDeclaredFields();
+        List<Method> getters = new ArrayList<Method>();
+
+        for (Field field : fields) {
+            Method setter = testClass.getClass().getDeclaredMethod("set" + field.getName().substring(0, 1).toUpperCase() + field.getName().substring(1), field.getType());
+            Method getter = testClass.getClass().getDeclaredMethod("get" + field.getName().substring(0, 1).toUpperCase() + field.getName().substring(1));
+            if (setter.getAnnotation(RdfId.class) != null || getter.getAnnotation(RdfId.class) != null) {
+                getters.add(testClass.getClass().getMethod(getter.getName()));
+            }
+        }
+
+        Hasher hasher = Hashing.md5().newHasher();
+        for (Method getter : getters) {
+            try {
+                Object value = getter.invoke(testClass);
+
+                hasher.putString(value.toString(), Charsets.UTF_8);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return hasher.hash().toString();
     }
 
 }

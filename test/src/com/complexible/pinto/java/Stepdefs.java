@@ -2,22 +2,30 @@ package com.complexible.pinto.java;
 
 import com.complexible.common.openrdf.model.ModelIO;
 import com.complexible.pinto.RDFMapper;
+import com.complexible.pinto.annotations.RdfId;
 import com.complexible.pinto.java.beans.Dog;
 import com.complexible.pinto.java.beans.Person;
 import com.complexible.pinto.java.helper.ModelTestHelper;
+import com.google.common.hash.Hasher;
+import com.google.common.hash.Hashing;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
+import org.apache.commons.io.Charsets;
 import org.openrdf.model.Model;
 import org.openrdf.rio.RDFFormat;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -120,6 +128,19 @@ public class Stepdefs {
     @When("I serialize the {string}")
     public void iSerializeTheObject(String objectName) {
         this.model = RDFMapper.create().writeValue(testClass);
+        //System.out.println(model.toString());
     }
 
+    @And("the {string} of the {string} is annotated with @RdfId")
+    public void theAttributeOfTheClassIsAnnotatedWithRdfId(String attribute, String className) {
+
+    }
+
+    @Then("I should see the URI of the {string} object is generated only by the annotated properties")
+    public void iShouldSeeTheURIOfTheObjectIsGeneratedOnlyByTheAnnotatedProperties(String className) throws NoSuchMethodException {
+        String writtenHash = ModelTestHelper.getHash(model);
+        String expected = ModelTestHelper.getExpectedHash(testClass);
+
+        assertEquals(expected, writtenHash);
+    }
 }
