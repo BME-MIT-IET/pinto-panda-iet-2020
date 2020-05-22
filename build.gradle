@@ -2,7 +2,7 @@ apply plugin: "idea"
 apply plugin: "java"
 apply plugin: "maven-publish"
 apply plugin: "jacoco"
-
+apply plugin: "org.sonarqube"
 
 wrapper() {
 	gradleVersion = '6.4'
@@ -61,8 +61,6 @@ buildscript {
 	}
 }
 
-apply plugin: 'jacoco'
-
 jacoco {
 	toolVersion = "0.8.5"
 	reportsDir = file("$buildDir/jacocoReportDir")
@@ -74,7 +72,6 @@ jacocoTestReport {
 	}
 }
 
-apply plugin: "org.sonarqube"
 
 plugins.withType(JacocoPlugin) {
 	tasks["test"].finalizedBy 'jacocoTestReport'
