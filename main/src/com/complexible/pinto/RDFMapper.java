@@ -667,12 +667,11 @@ public final class RDFMapper {
 	}
 
 	private Class pinpointClass(final Model theGraph, final Resource theResource, final PropertyDescriptor theDescriptor) {
-		Class aClass = null;
+		if(theDescriptor==null)
+			return null;
 
-		if(true)
-		{
-			aClass = theDescriptor.getPropertyType();
-		}
+		Class aClass = theDescriptor.getPropertyType();
+
 
 		if (Collection.class.isAssignableFrom(aClass)) {
 			// if the field we're assigning from is a collection, try and figure out the type of the thing
