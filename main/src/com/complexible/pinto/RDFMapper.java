@@ -905,7 +905,7 @@ public final class RDFMapper {
 
 		Resource aId = null;
 		if (!Iterables.isEmpty(aSorted)) {
-			Hasher aFunc = Hashing.md5().newHasher();
+			Hasher aFunc = Hashing.sha256().newHasher();
 			for (String aProp : aSorted) {
 				try {
 					final Object aValue = PropertyUtils.getProperty(theT, aProp);
@@ -940,7 +940,7 @@ public final class RDFMapper {
 		}
 		else {
 			if (aId == null) {
-				aId = mValueFactory.createIRI(mDefaultNamespace + Hashing.md5().newHasher()
+				aId = mValueFactory.createIRI(mDefaultNamespace + Hashing.sha256().newHasher()
 				                                                         .putString(theT.toString(), Charsets.UTF_8)
 				                                                         .hash().toString());
 			}
