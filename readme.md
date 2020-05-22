@@ -61,7 +61,7 @@ public static final class Person {
             return true;
         }
         else if (theObj instanceof Person) {
-            return Objects.equal(mName, ((Person) theObj).mName);
+            return Objects.equals(mName, ((Person) theObj).mName);
         }
         else {
             return false;
@@ -73,10 +73,10 @@ public static final class Person {
 You can easily serialize it as RDF:
 
 ```java
-Graph aGraph = RDFMapper.create().writeValue(new Person("Michael Grove"));
+Model aModel = RDFMapper.create().writeValue(new Person("Michael Grove"));
 ```
 
-And `aGraph` serialized as NTriples:
+And `aModel` serialized as NTriples:
 
 ```
 <tag:complexible:pinto:f97658c7048377a026111c7806bd7280> <tag:complexible:pinto:name> "Michael Grove"^^<http://www.w3.org/2001/XMLSchema#string> .
@@ -85,7 +85,7 @@ And `aGraph` serialized as NTriples:
 And if you have that RDF, you can turn it back into a `Person`:
 
 ```java
-final Person aPerson RDFMapper.create().readValue(aGraph, Person.class)
+final Person aPerson RDFMapper.create().readValue(aModel, Person.class)
 ```
 
 This is the quick and dirty example, but for more detailed examples, check out the tests.

@@ -1,0 +1,1 @@
+<tag:complexible:pinto:a16ddce75c6afaedd00ecd08954b62e0> <tag:complexible:pinto:breed> "Golden retriever" .
