@@ -203,13 +203,9 @@ public final class RDFMapper {
 
 	private static boolean isIgnored(final PropertyDescriptor thePropertyDescriptor) {
 		// we'll ignore getClass() on the bean
-		if (thePropertyDescriptor.getName().equals("class")
+		return thePropertyDescriptor.getName().equals("class")
 		    && thePropertyDescriptor.getReadMethod().getDeclaringClass() == Object.class
-		    && thePropertyDescriptor.getReadMethod().getReturnType().equals(Class.class)) {
-			return  true;
-		}
-
-		return false;
+		    && thePropertyDescriptor.getReadMethod().getReturnType().equals(Class.class);
 	}
 
 	/**
