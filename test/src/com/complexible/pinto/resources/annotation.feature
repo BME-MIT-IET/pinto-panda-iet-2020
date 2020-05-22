@@ -18,7 +18,7 @@ Feature: Annotation
     And the "name" of the "AnnotatedCat" is "Garfield" of type String
     And the "weight" of the "AnnotatedCat" is "14" of type Integer
     When I serialize the "AnnotatedCat"
-    Then I should see the URI of the "name" property is "value"
+    Then I should see the URI of the "name" property is "urn:extraLove"
 
   Scenario: Java bean with @RdfsClass annotation is serialize successfully
     Given I use the "AnnotatedCat" class

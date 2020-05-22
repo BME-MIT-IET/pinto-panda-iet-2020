@@ -3,11 +3,13 @@ package com.complexible.pinto.java;
 import com.complexible.common.openrdf.model.ModelIO;
 import com.complexible.pinto.RDFMapper;
 import com.complexible.pinto.annotations.RdfId;
+import com.complexible.pinto.annotations.RdfProperty;
 import com.complexible.pinto.java.beans.Dog;
 import com.complexible.pinto.java.beans.Person;
 import com.complexible.pinto.java.helper.ModelTestHelper;
 import com.google.common.hash.Hasher;
 import com.google.common.hash.Hashing;
+import com.sun.tools.javac.code.TypeMetadata;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
@@ -23,9 +25,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
@@ -128,12 +128,12 @@ public class Stepdefs {
     @When("I serialize the {string}")
     public void iSerializeTheObject(String objectName) {
         this.model = RDFMapper.create().writeValue(testClass);
-        //System.out.println(model.toString());
+        System.out.println(model.toString());
     }
 
     @And("the {string} of the {string} is annotated with @RdfId")
     public void theAttributeOfTheClassIsAnnotatedWithRdfId(String attribute, String className) {
-
+        //Nem csinál még semmit, de ez nem baj jelenleg
     }
 
     @Then("I should see the URI of the {string} object is generated only by the annotated properties")
@@ -142,5 +142,72 @@ public class Stepdefs {
         String expected = ModelTestHelper.getExpectedHash(testClass);
 
         assertEquals(expected, writtenHash);
+    }
+
+    @And("the {string} of the {string} of the {string} is annotated with @RdfProperty")
+    public void theMethodOfTheOfTheObjectIsAnnotatedWithRdfProperty(String methodType, String attribute, String className) {
+        //Nem csinál még semmit, de ez nem baj jelenleg
+    }
+
+
+    @And("the URI of the {string} property is {string}")
+    public void theURIOfThePropertyIs(String attribute, String attributeURI) throws NoSuchFieldException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+        Field field = testClass.getClass().getDeclaredField(attribute);
+        Method setter = testClass.getClass().getDeclaredMethod("set" + field.getName().substring(0, 1).toUpperCase() + field.getName().substring(1), field.getType());
+        Method getter = testClass.getClass().getDeclaredMethod("get" + field.getName().substring(0, 1).toUpperCase() + field.getName().substring(1));
+        RdfProperty setterAnnotation = setter.getAnnotation(RdfProperty.class);
+        RdfProperty getterAnnotation = getter.getAnnotation(RdfProperty.class);
+
+        if (setterAnnotation == null && getterAnnotation == null) {
+            return;
+        } else {
+            Method method = Class.class.getDeclaredMethod("annotationData", null);
+            method.setAccessible(true);
+            Object annotationData = method.invoke(RdfProperty.class);
+            Field annotations = annotationData.getClass().getDeclaredField("annotations");
+            annotations.setAccessible(true);
+            Map<Class<? extends Annotation>, Annotation> map =
+                    (Map<Class<? extends Annotation>, Annotation>) annotations.get(annotationData);
+            Annotation newRdfProp = new RdfProperty() {
+
+                @Override
+                public Class<? extends Annotation> annotationType() {
+                    return RdfProperty.class;
+                }
+
+                @Override
+                public String value() {
+                    return attributeURI;
+                }
+
+                @Override
+                public boolean isList() {
+                    return false;
+                }
+
+                @Override
+                public String language() {
+                    return "";
+                }
+
+                @Override
+                public String datatype() {
+                    return "";
+                }
+            };
+
+            if (setterAnnotation != null) {
+                map.put(setterAnnotation.getClass(), newRdfProp);
+            } else {
+                map.put(getterAnnotation.getClass(), newRdfProp);
+            }
+        }
+    }
+
+    @Then("I should see the URI of the {string} property is {string}")
+    public void iShouldSeeTheURIOfThePropertyIs(String attribute, String value) {
+        String actualTag = ModelTestHelper.getAnnotatedAttribute(model, value);
+
+        assertEquals(value, actualTag);
     }
 }

@@ -92,4 +92,16 @@ public class ModelTestHelper {
         return hasher.hash().toString();
     }
 
+    public static String getAnnotatedAttribute(Model model, String attributeName) {
+        Object[] attributes = model.predicates().toArray();
+        for (Object o: attributes) {
+            String split = o.toString();
+            if (split.contains(attributeName)) {
+                return split;
+            }
+        }
+
+        return "";
+
+    }
 }
