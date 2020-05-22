@@ -14,3 +14,5 @@ Az elemzés (részeltesen: [issue](https://github.com/BME-MIT-IET/pinto-panda-ie
 * kiemelkedően magas azoknak a jelzéseknek a száma, amik az egyes függvények komplexitását mérték: sok a hosszú függvény, melyek működésének a megértését a hosszuk nagy mértékben nehezíti.
 
 A felsoroltakon kívül nem állapított meg a sonar jelentősebb hibát.
+
+A hibák közül javítottam néhányat, ezek szintén az issue-ban részletesen dokumentálva lettek. A hash hibának javításával próbálkoztam, csak későn vettem észre, hogy nem elég a függvényeket módosítani, a forrásfájlokat is kellett volna. Viszont azokra a fájlokra építettek más tesztek, ezért ezt egyenlőre nem javítottam, viszont később hasznos lenne ennek a felülvizsgálata.
