@@ -2,20 +2,13 @@ package com.complexible.pinto.java;
 
 import com.complexible.common.openrdf.model.ModelIO;
 import com.complexible.pinto.RDFMapper;
-import com.complexible.pinto.annotations.RdfId;
 import com.complexible.pinto.annotations.RdfProperty;
 import com.complexible.pinto.annotations.RdfsClass;
-import com.complexible.pinto.java.beans.Dog;
-import com.complexible.pinto.java.beans.Person;
 import com.complexible.pinto.java.helper.ModelTestHelper;
-import com.google.common.hash.Hasher;
-import com.google.common.hash.Hashing;
-import com.sun.tools.javac.code.TypeMetadata;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
-import org.apache.commons.io.Charsets;
 import org.openrdf.model.Model;
 import org.openrdf.rio.RDFFormat;
 
