@@ -4,6 +4,7 @@ import com.complexible.common.openrdf.model.ModelIO;
 import com.complexible.pinto.RDFMapper;
 import com.complexible.pinto.annotations.RdfId;
 import com.complexible.pinto.annotations.RdfProperty;
+import com.complexible.pinto.annotations.RdfsClass;
 import com.complexible.pinto.java.beans.Dog;
 import com.complexible.pinto.java.beans.Person;
 import com.complexible.pinto.java.helper.ModelTestHelper;
@@ -128,7 +129,7 @@ public class Stepdefs {
     @When("I serialize the {string}")
     public void iSerializeTheObject(String objectName) {
         this.model = RDFMapper.create().writeValue(testClass);
-        System.out.println(model.toString());
+        //System.out.println(model.toString());
     }
 
     @And("the {string} of the {string} is annotated with @RdfId")
@@ -207,6 +208,46 @@ public class Stepdefs {
     @Then("I should see the URI of the {string} property is {string}")
     public void iShouldSeeTheURIOfThePropertyIs(String attribute, String value) {
         String actualTag = ModelTestHelper.getAnnotatedAttribute(model, value);
+
+        assertEquals(value, actualTag);
+    }
+
+    @And("the class is annotated with @RdfsClass")
+    public void theClassIsAnnotatedWithRdfsClass() {
+        //Ez még nem csinál semmit, de ez nem baj
+    }
+
+
+    @And("the rdf:type of the {string} class is {string}")
+    public void theRdfTypeOfTheClassIs(String className, String value) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, NoSuchFieldException {
+        RdfsClass classAnnotation = testClass.getClass().getAnnotation(RdfsClass.class);
+        if (classAnnotation != null) {
+            Method method = Class.class.getDeclaredMethod("annotationData", null);
+            method.setAccessible(true);
+            Object annotationData = method.invoke(RdfsClass.class);
+            Field annotations = annotationData.getClass().getDeclaredField("annotations");
+            annotations.setAccessible(true);
+            Map<Class<? extends Annotation>, Annotation> map =
+                    (Map<Class<? extends Annotation>, Annotation>) annotations.get(annotationData);
+            Annotation newRdfsClass = new RdfsClass() {
+
+                @Override
+                public Class<? extends Annotation> annotationType() {
+                    return RdfsClass.class;
+                }
+
+                @Override
+                public String value() {
+                    return value;
+                }
+            };
+            map.put(classAnnotation.getClass(), newRdfsClass);
+        }
+    }
+
+    @Then("I should see the rdf:type of the {string} is {string}")
+    public void iShouldSeeTheRdfTypeOfTheClassIs(String className, String value) {
+        String actualTag = ModelTestHelper.getAnnotatedClass(model, "type");
 
         assertEquals(value, actualTag);
     }

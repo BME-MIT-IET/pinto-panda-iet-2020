@@ -43,7 +43,7 @@ public class ModelTestHelper {
     private static Integer getIndexOfAttribute(Model model, String attributeName) {
         List<Object> attributes = Arrays.asList(model.predicates().toArray());
         for (Object o: attributes) {
-            List<String> split = Arrays.asList(o.toString().split(":"));
+            List<String> split = Arrays.asList(o.toString().split("[:, -, #]"));
             if (split.contains(attributeName)) {
                 return attributes.indexOf(o);
             }
@@ -103,5 +103,14 @@ public class ModelTestHelper {
 
         return "";
 
+    }
+
+    public static String getAnnotatedClass(Model model, String attributeName) {
+        Object[] ns = model.objects().toArray();
+        Integer index = getIndexOfAttribute(model, attributeName);
+        if (index >= 0) {
+            return ns[index].toString();
+        }
+        return "";
     }
 }
