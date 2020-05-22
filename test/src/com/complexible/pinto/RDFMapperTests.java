@@ -46,8 +46,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * <p></p>
@@ -392,7 +391,7 @@ public class RDFMapperTests {
 
 		Model aGraph = RDFMapper.create().writeValue(aPerson);
 
-		assertTrue(aPerson.id() != null);
+		assertNotNull(aPerson.id());
 
 		assertEquals(1, aGraph.size());
 

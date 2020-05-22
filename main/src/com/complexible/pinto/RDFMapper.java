@@ -203,13 +203,9 @@ public final class RDFMapper {
 
 	private static boolean isIgnored(final PropertyDescriptor thePropertyDescriptor) {
 		// we'll ignore getClass() on the bean
-		if (thePropertyDescriptor.getName().equals("class")
+		return thePropertyDescriptor.getName().equals("class")
 		    && thePropertyDescriptor.getReadMethod().getDeclaringClass() == Object.class
-		    && thePropertyDescriptor.getReadMethod().getReturnType().equals(Class.class)) {
-			return  true;
-		}
-
-		return false;
+		    && thePropertyDescriptor.getReadMethod().getReturnType().equals(Class.class);
 	}
 
 	/**
@@ -412,10 +408,7 @@ public final class RDFMapper {
 		}
 
 		Resource aId = id(theValue);
-		System.out.println(theValue);
-		if (theValue== byte.class) {
-			System.out.println("found byte");
-		}
+		
 		final IRI aType = getType(theValue);
 
 		try {
@@ -674,7 +667,12 @@ public final class RDFMapper {
 	}
 
 	private Class pinpointClass(final Model theGraph, final Resource theResource, final PropertyDescriptor theDescriptor) {
-		Class aClass = theDescriptor.getPropertyType();
+		Class aClass = null;
+
+		if(true)
+		{
+			aClass = theDescriptor.getPropertyType();
+		}
 
 		if (Collection.class.isAssignableFrom(aClass)) {
 			// if the field we're assigning from is a collection, try and figure out the type of the thing

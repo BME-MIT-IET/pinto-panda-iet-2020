@@ -2,7 +2,7 @@ apply plugin: "idea"
 apply plugin: "java"
 apply plugin: "maven-publish"
 apply plugin: "jacoco"
-
+apply plugin: "org.sonarqube"
 
 wrapper() {
 	gradleVersion = '6.4'
@@ -48,6 +48,42 @@ repositories {
 		url "https://maven.stardog.com"
 	}
 	jcenter()
+}
+
+buildscript {
+	repositories {
+		maven {
+			url "https://plugins.gradle.org/m2/"
+		}
+	}
+	dependencies {
+		classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.8"
+	}
+}
+
+jacoco {
+	toolVersion = "0.8.5"
+	reportsDir = file("$buildDir/jacocoReportDir")
+}
+
+jacocoTestReport {
+	reports {
+		xml.enabled true
+	}
+}
+
+
+plugins.withType(JacocoPlugin) {
+	tasks["test"].finalizedBy 'jacocoTestReport'
+}
+
+sonarqube {
+	properties {
+		property "sonar.projectKey", "BME-MIT-IET_pinto-panda-iet-2020"
+		property "sonar.organization", "bme-mit-iet-org"
+		property "sonar.host.url", "https://sonarcloud.io"
+		property "sonar.login", "73086d4f2425c12b6052a95f78de32188892e3f3"
+	}
 }
 
 dependencies {
