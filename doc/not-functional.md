@@ -10,7 +10,17 @@ A Gradle használata egyszerű és minden alapesetben szükséges konfiguráció
 ### Run
 
 A használatához kapunk egy gyors és egyszerű példát, illetve az alkalmazás tesztjeinek megtekintésével további példákhoz tudunk jutni, ezzel megkönnyítve a libary használatának megértését.
+Ezt a leírást végigolvasva elég egyértelmű a müködése és egyszerűen használható, mivel nem igényel felesleges paramétereket, hanem a write-nak elég egy a read-nek meg két paraméter csupán.
 
+A nagyobb figyelmet és energiát azt nem az adott helyen történő használata, hanem a hozzá szükséges megfelelő adatosztályok elkészítése, ugyanis itt a hashCode() és az equals() függvények felülírása is szükséges a konstruktor., valamint getterek és setterek elkészítésén túl, azonban a libary readme-je ehhez is mutat példát, valamint számos másik példa is található a tesztek között, azonban egyik helyen sincs hozzá semmilyen magyarázat, így bizonyos esetekben nehezebb megérteni, hogy most az adott függvény felülírására vagy az adott kódsorra miért van szükség.
+
+Sajnos a tesztek kommentezettségének hiánya nem csak az adott helyen fordul elő, hanem az összes teszt kommentezettsége is csak 2%-os és ez is csak pár fájlból jön össze, ugyanis a legtöbben egy sor kommment se található.
+
+![Komment statisztikák a tesztekben](/doc/images/comments_stat.png)
+
+A többi fájl esetében már sokkal jobb a kommentek aránya és az src mappában található java fájloknál már eléri a 36%-ot is.
+
+![Komment statisztikák az src-ben](/doc/images/comments_stat_src.png)
 
 
 ## Teljesítmény
