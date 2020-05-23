@@ -18,22 +18,27 @@ A használatához kapunk egy gyors és egyszerű példát, illetve az alkalmazá
 ### Build
 
 ![Teljesítmény javaslatok](/doc/images/suggestions.png)
+
 Egy nagyon régi (2.0) Gradle verzió volt a konfigurációban, ez jelentősen ronthatja a teljesítményt (és hibát is okozhat), ezt a csapat javította a legújabb verzióra (6.4.1).
 A Gradle Deamon nincs letiltva, ami a teljesítményt javítja
 A párhuzamos végrehajtás nincs engedélyezve ezáltal a Gradle Enterprise ajánlásai szerint hosszabb a build ideje, azonban a timeline-t és az időket megnézve ilyen és olyan esetben, nem látjuk a párhuzamos futtatás nyomait. (Ennek engefélyezéséhez a gradle.properties fájlba be kéne írni ezt: org.gradle.parallel=true)
+
 ![Nem párhuzamos](/doc/images/not_parallel.png)
 ![Párhuzamos](/doc/images/parallel.png)
 
 A libary build teljesítményét egy másik projekthez (4-6. gyakorlat) hasonlítva, a következőket állapíthatjuk meg (természetesen ez így nem reprezentatív, de kiindulásnak jó):
+
 ![Pinto](/doc/images/pinto_performance.png)
 ![Másik projekt](/doc/images/other_performance.png)
 
 Összesítve a pinto build ideje rövidebb, a Startup idejénél nincs különbség, a különbség nagy része a Settings-ből adódik ezek alapján a pinto-ban nincs sok "settings script", 
 azonban jóval kisebb különbséggel, de a Configuration-ben pont az ellenkezőjét láthatjuk, így itt érdemes megvizsgálni, hogy ezt mi okozza.
 A Configuration idejébe a build plugins, build scripts végrehajtása, projekt konfigurálása és a feladat végrehajtási terv elkészítése számít bele, a pluginokat végignézve a projektben 14 plugin tallható, ezek egy része már az általunk hozzáadott pluginok (jacoco, com.gradle.enterprise...), ezek idejét (Settings+Configuration) megvizsgálva látható, hogy ebből a plugin-okra fordított szinte egész időt az ezek megállapításához használt Gradle Enterprise okozza, így ezt nem érdemes használni, ha nem szükséges.
+
 ![Pluginok ideje](/doc/images/plugins_time.png)
 
 Még a Task execution-t érdemes jobban megvizsgálnunk, itt azt láthatjuk, hogy a task-ok naprakészen tartásával jelentős, a task végrehajtásra fordított idő 91%-át spórolhatjuk meg.
+
 ![Feladat végrehajtás](/doc/images/task_execution.png)
 
 
@@ -52,9 +57,9 @@ Az RDFMapperBuilderTestsIET tesztjeit vizsgálva megfigyelhető, hogy a különb
 
 
 ## Gradle Scans
-https://scans.gradle.com/s/quyz3hgydd2tc
-https://scans.gradle.com/s/vxormbssi6zma
+https://scans.gradle.com/s/quyz3hgydd2tc  
+https://scans.gradle.com/s/vxormbssi6zma  
 
-https://scans.gradle.com/s/phahp4uzm3rno
-https://scans.gradle.com/s/gv4xghc7mxa2m
-https://scans.gradle.com/s/ag2tczuvft7m4
+https://scans.gradle.com/s/phahp4uzm3rno  
+https://scans.gradle.com/s/gv4xghc7mxa2m  
+https://scans.gradle.com/s/ag2tczuvft7m4  
