@@ -98,11 +98,14 @@ Típus| Művelet | idő (s)
 String | írás | 3.98
 Integer | írás | 3.97
 Long | írás | 4.04
+6 primitív | írás | 9.69
 String | olvasás | 1.13
 Integer | olvasás | 1.33
 Long | olvasás | 1.43
+6 primitív | olvasás | 6.60
 
-A különböző típusok között a mérések alapján írás esetén szinte semmi különbség nincs, olvasás esetében pedig egy kicsi különbség van
+A különböző típusok között a mérések alapján írás esetén szinte semmi különbség nincs, olvasás esetében pedig egy kicsi különbség van.  
+Megvizsgáltam azt is, hogy mi történik, ha egy-egy érték helyett 6 különböző típusú értéket tároló osztályt próbálunk RDF-be alakítani, illetve onnan kiolvasni, ekkor nem meglepő módon megnőnek az idők, azonban míg 6-szor annyi változót tárolunk az írás ideje csak ~2,5-szeresére nő, az olvasás ideje viszont nagyjából 5-szörösére nő (ha a másik 3 mérés átlagát nézzük), azonban itt már számít az adatok típusa, mert ha a String olvasási idejével hasonlítjuk össze, akkor ez a szám már 5.8, így szinte majdnem már 6-ot kapunk, vagyis megállapítható, hogy több érték egy osztályban való tárolávál az írás idejével jelentősen spórolhatunk, viszont az olvasásnál már nincs nagy különbség.
 
 ## Gradle Scans
 https://scans.gradle.com/s/quyz3hgydd2tc  
