@@ -76,7 +76,7 @@ Első körben a leírásban szereplő Person() osztályt használtam és a lefut
 
 Egy Stringet tartalmazó osztály esetében:
 
-RDF olvasás | RDF írás | Idő (s) | Idő/Művelet* (ms)
+RDF olvasás | RDF írás | Idő (s) | Idő/Művelet (ms)
 ------------ | ------------- | ------------- | -------------
 0 | 1 | 0.19 | 189.67
 0 | 100 | 0.25 | 2.49
@@ -111,7 +111,7 @@ Megvizsgáltam azt is, hogy mi történik, ha egy-egy érték helyett 6 különb
 
 A stresszteszthez megvizsgáltam, hogy különböző méretű osztályok esetében mi történik, ehhez Integer-ek tömbjét vettem és csak egy-egy írást/olvasást végeztem mindig el.
 
-Művelet | Tömb mérete | idő (s) | Idő/Művelet* (ms)
+Művelet | Tömb mérete | idő (s) | Idő/Művelet (ms)
 ------------ | ------------- | ------------- | -------------
 írás | 10 | 0.20 | 19.9667
 írás | 100 | 0.19 | 1.8567
@@ -137,9 +137,9 @@ Azonban nagyságrendileg nagyobb számoknál már az eddig tapasztaltakkal ellen
 
 ### Tesztekhez használt gép
 
-Processor: Intel Core i7-8750H CPU @ 2.20GHz
-RAM: 20.0 GB
-64 bites Windows operációs rendszer
+Processor: Intel Core i7-8750H CPU @ 2.20GHz  
+RAM: 20.0 GB  
+64 bites Windows operációs rendszer  
 Java 1.8.0_251
 
 Ahogy az alábbi ábrán is látható az alkalmazás eléggé kihasználta a gép erőforrásait:  
