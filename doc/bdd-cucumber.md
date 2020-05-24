@@ -5,6 +5,8 @@ A library csak unit tesztekkel rendelkezett, illetve egy aránylag korrekt leír
 
 ##BDD tesztelés
 A library fő funkciója a Java bean-ek szerializálása NTriple-ökbe, és az azokból történő deszerializáció. Ennek megfelelően külön feature fájlt szenteltem ennek a két viselkedésnek, illetve egy továbbit az annotációk (class, property, id) vizsgálatára. Az előző két esetben több, hasonló scenario megírásával kezdtem, amiket utána fokozatosan általánosítottam (ehhez kellett a reflection használata). A serializálás és a deszerializálás tehát működik bármilyen adott objektumra (a class fájlokat a bdddata mappába kell rakni), amely egyszerű String, Integer, Float vagy Boolean fieldekkel rendelkezik (a többi típusra nem láttam értelmét most megcsinálni az összes steppet, mert ezek is csak 1-1 sorban térnek el). Az annotációkhoz tartozó scenario-k olyan osztályokra működnek, ahol a tesztelni kívánt annotációk értékei már be vannak állítva, mivel ezek dinamikus váltogatását nem sikerült elérnem reflexió segítségével.
+
+A tesztek a gradlew cucumber paranccsal futtathatók:
 ![A BDD_tesztek_eredménye](images/bdd-test-count.PNG)
 
 ## A tesztelés során felmerült meglátások
