@@ -107,7 +107,7 @@ Long | olvasás | 1,43
 A különböző típusok között a mérések alapján írás esetén szinte semmi különbség nincs, olvasás esetében pedig egy kicsi különbség van.  
 Megvizsgáltam azt is, hogy mi történik, ha egy-egy érték helyett 6 különböző típusú értéket tároló osztályt próbálunk RDF-be alakítani, illetve onnan kiolvasni, ekkor nem meglepő módon megnőnek az idők, azonban míg 6-szor annyi változót tárolunk az írás ideje csak ~2,5-szeresére nő, az olvasás ideje viszont nagyjából 5-szörösére nő (ha a másik 3 mérés átlagát nézzük), azonban itt már számít az adatok típusa, mert ha a String olvasási idejével hasonlítjuk össze, akkor ez a szám már 5,8, így szinte majdnem már 6-ot kapunk, vagyis megállapítható, hogy több érték egy osztályban való tárolásával az írás idejével jelentősen spórolhatunk, viszont az olvasásnál már nincs nagy különbség.
 
-Összehasonlítás képpen ennek a libary használatának a segítségével a tárgy 3. gyakorlatán használt, a Szépművészeti Múzeum műkincseit tartalmazó adatbázis egy részét tartalmazó ontológia fájlméretével közel azonos fájlméretű ontológia generálása nagyjából 1,67 másodperc és az olvasása pedig nagyjából a tapasztalatok alapján olyan 45-50 perc köré tehető.
+Összehasonlítás képpen ennek a libary használatának a segítségével a tárgy 3. gyakorlatán használt, a Szépművészeti Múzeum műkincseit tartalmazó adatbázis egy részét tartalmazó ontológia fájlméretével közel azonos fájlméretű ontológia generálása nagyjából 1,67 másodperc és az olvasása pedig nagyjából 48,5 perc.
 
 ## Stresszteszt
 
@@ -145,7 +145,7 @@ RAM: 20.0 GB
 64 bites Windows operációs rendszer  
 Java 1.8.0_251
 
-Ahogy az alábbi ábrán is látható az alkalmazás eléggé kihasználta a gép erőforrásait:  
+Ahogy az alábbi ábrán is látható az alkalmazás időnként eléggé kihasználta a gép erőforrásait:  
 ![CPU használat](/doc/images/CPU.png)
 
 ## Gradle Scans
