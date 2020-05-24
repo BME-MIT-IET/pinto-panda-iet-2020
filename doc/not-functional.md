@@ -7,10 +7,9 @@
 A libary-hez tartozik egy readme, ahol a build és a teszt futtatás egyszerű parancsai le vannak írva, azonban a projektépítő eszközről más információ (például link nincs), igaz a Gradle elég elterjedt és ismert, így ez alapvetően nem okoz problémát.
 A Gradle használata egyszerű és minden alapesetben szükséges konfigurációt a libary beállít, így egy rövid parancs elegendő.
 
-### Run
+### Tesztek
 
-A használatához kapunk egy gyors és egyszerű példát, illetve az alkalmazás tesztjeinek megtekintésével további példákhoz tudunk jutni, ezzel megkönnyítve a libary használatának megértését.
-Ezt a leírást végigolvasva elég egyértelmű a müködése és egyszerűen használható, mivel nem igényel felesleges paramétereket, hanem a write-nak elég egy a read-nek meg két paraméter csupán.
+A használatához kapunk egy gyors és egyszerű példát, illetve az alkalmazás tesztjeinek megtekintésével további példákhoz tudunk jutni, ezzel megkönnyítve a libary használatának megértését, így először a teszteket vizsgáltam meg.
 
 A nagyobb figyelmet és energiát azt nem az adott helyen történő használata, hanem a hozzá szükséges megfelelő adatosztályok elkészítése, ugyanis itt a hashCode() és az equals() függvények felülírása is szükséges a konstruktor., valamint getterek és setterek elkészítésén túl, azonban a libary readme-je ehhez is mutat példát, valamint számos másik példa is található a tesztek között, azonban egyik helyen sincs hozzá semmilyen magyarázat, így bizonyos esetekben nehezebb megérteni, hogy most az adott függvény felülírására vagy az adott kódsorra miért van szükség.
 
@@ -22,6 +21,10 @@ A többi fájl esetében már sokkal jobb a kommentek aránya és az src mappáb
 
 ![Komment statisztikák az src-ben](/doc/images/comments_stat_src.png)
 
+### Libary használata
+
+A használathoz nagy segítség a már említett readme, azonban ott az rdf4j keretrendszer linkje hibás volt, így ezt javítottam.
+A használata a leírás alapján egészen egyszerű, csupán a megfelelő (már a teszteknél említett) adatosztály létrehozására van szükség, illetve ahol el akarjuk végezni a folyamatot, ott az egy soros példa kódból az osztály és a megfelelős szöveg/változó kicserélése szükséges.
 
 ## Teljesítmény
 
@@ -52,9 +55,9 @@ Még a Task execution-t érdemes jobban megvizsgálnunk, itt azt láthatjuk, hog
 ![Feladat végrehajtás](/doc/images/task_execution.png)
 
 
-### Run
+### Tesztek
 
-A futtatás teljesítményét a tesztek segítségével néztem meg. (https://scans.gradle.com/s/gv4xghc7mxa2m/tests)
+Először a teljesítményét a tesztek segítségével néztem meg. (https://scans.gradle.com/s/gv4xghc7mxa2m/tests)
 A legtöbb teszt pár ezredmásodpercen belül lefutott, így közöttük nem volt nagy különbség és érdemben nem is lehetett vizsgálni, azonban voltak ehhez képest kiemelkedőbb értékek is ezeket próbáltam vizsgálni.
 
 Az RDFMapperTests lefutási idejeit végignézve megfigyelhető, hogy milyen típusok hatására mekkora időbeli különbségek vannak a különböző típusok és adatok írása/olvasása között.
@@ -65,6 +68,41 @@ Az RDFMapperBuilderTestsIET tesztjeit vizsgálva megfigyelhető, hogy a különb
 
 ![Builder tesztek](/doc/images/builder_test.png)
 
+### Libary használata
+
+Első körben a leírásban szereplő Person() osztályt használtam és a lefutási időt figyeltem különböző számú írás/olvasás esetén.
+(Az idők számításánál az írások/olvasások nélküli időt kivontam az írásokkat+olvasásokkat tartalmazó időből, hogy más dolgok minél kevésbé befolyásolják a számokat, illetve minden esetben 3x futtattam a minél pontosabb eredményért átlagoltam.)
+
+Egy Stringet tartalmazó osztály esetében:
+
+RDF olvasás | RDF írás | Idő (s) | Idő/Művelet* (ms)
+------------ | ------------- | ------------- | -------------
+0 | 1 | 0.19 | 189.67
+0 | 100 | 0.25 | 2.49
+0 | 10000 | 0.45 | 0.04
+0 | 1000000 | 3.98 | 0.00
+1 | 0 | 0.01 | 12.00
+100 | 0 | 0.01 | 0.15
+1000 | 0 | 0.02 | 0.02
+10000 | 0 | 0.10 | 0.01
+1000000 | 0 | 1.13 | 0.00
+
+Ahogy látható az RDF olvasás jelentősen kevesebb időt vesz igénybe az írás, mint az olvasás és ahogy növeljük a műveletek számát, jelentősen csökken az egy-egy műveletre jutó idő átlaga.
+És míg egy-egy olvasi és írási idő között nagyjából 16-szoros különbség van, addig ez 10000 esetben már csak 4,5-szeres, így látható, hogy minél több írást hajt végre annál kisebb lesz az írások és az olvasások közötti idő
+
+
+Ezek után megvizsgáltam különböző típusok írások és olvasási idejét (1000000 írás/olvasás):
+
+Típus| Művelet | idő (s)
+------------ | ------------- | -------------
+String | írás | 3.98
+Integer | írás | 3.97
+Long | írás | 4.04
+String | olvasás | 1.13
+Integer | olvasás | 1.33
+Long | olvasás | 1.43
+
+A különböző típusok között a mérések alapján írás esetén szinte semmi különbség nincs, olvasás esetében pedig egy kicsi különbség van
 
 ## Gradle Scans
 https://scans.gradle.com/s/quyz3hgydd2tc  
