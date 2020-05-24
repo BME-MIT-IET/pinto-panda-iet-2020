@@ -11,20 +11,21 @@ A Gradle használata egyszerű és minden alapesetben szükséges konfiguráció
 
 A használatához kapunk egy gyors és egyszerű példát, illetve az alkalmazás tesztjeinek megtekintésével további példákhoz tudunk jutni, ezzel megkönnyítve a libary használatának megértését, így először a teszteket vizsgáltam meg.
 
-A nagyobb figyelmet és energiát azt nem az adott helyen történő használata, hanem a hozzá szükséges megfelelő adatosztályok elkészítése, ugyanis itt a hashCode() és az equals() függvények felülírása is szükséges a konstruktor., valamint getterek és setterek elkészítésén túl, azonban a libary readme-je ehhez is mutat példát, valamint számos másik példa is található a tesztek között, azonban egyik helyen sincs hozzá semmilyen magyarázat, így bizonyos esetekben nehezebb megérteni, hogy most az adott függvény felülírására vagy az adott kódsorra miért van szükség.
+A teszteket megnézve elég hamar észrevehető, hogy nagyobb figyelmet és energiát azt nem az adott helyen történő használat, hanem a hozzá szükséges megfelelő adatosztályok elkészítése igényli, ugyanis bizonyos függvények felülírása is szükséges a konstruktor., valamint getterek és setterek elkészítésén túl. Azonban a libary readme-je ehhez is mutat példát, valamint számos másik példa is található a tesztek között, de egyik helyen sincs hozzá semmilyen magyarázat, így jelentősen nehezebb megérteni, hogy most az adott függvény felülírására vagy az adott kódsorra miért van szükség.
 
 Sajnos a tesztek kommentezettségének hiánya nem csak az adott helyen fordul elő, hanem az összes teszt kommentezettsége is csak 2%-os és ez is csak pár fájlból jön össze, ugyanis a legtöbben egy sor kommment se található.
 
 ![Komment statisztikák a tesztekben](/doc/images/comments_stat.png)
 
-A többi fájl esetében már sokkal jobb a kommentek aránya és az src mappában található java fájloknál már eléri a 36%-ot is.
+A többi fájl esetében már sokkal jobb a kommentek aránya és az src mappában található java fájloknál már eléri a 36%-ot is, így ott nincs ilyen probléma.
 
 ![Komment statisztikák az src-ben](/doc/images/comments_stat_src.png)
 
 ### Libary használata
 
-A használathoz nagy segítség a már említett readme, azonban ott az rdf4j keretrendszer linkje hibás volt, így ezt javítottam.
-A használata a leírás alapján egészen egyszerű, csupán a megfelelő (már a teszteknél említett) adatosztály létrehozására van szükség, illetve ahol el akarjuk végezni a folyamatot, ott az egy soros példa kódból az osztály és a megfelelős szöveg/változó kicserélése szükséges.
+A használathoz nagy segítség a már említett readme, azonban ott az rdf4j keretrendszer linkje hibás volt, így ezt javítottam.  
+A használata a leírás alapján egy-egy változós oszályok esetében egészen egyszerű, csupán a megfelelő (már a teszteknél említett) adatosztály létrehozására van szükség, illetve ahol el akarjuk végezni a folyamatot, ott az egy soros példa kódból az osztály és a megfelelős szöveg/változó kicserélése szükséges.
+Azonban összetettebb esetekben már a tesztek megtekintésére és nagyobb átgondolásra van szükség.
 
 ## Teljesítmény
 
@@ -44,7 +45,7 @@ A libary build teljesítményét egy másik projekthez (4-6. gyakorlat) hasonlí
 ![Pinto](/doc/images/pinto_performance.png)
 ![Másik projekt](/doc/images/other_performance.png)
 
-Összesítve a pinto build ideje rövidebb, a Startup idejénél nincs különbség, a különbség nagy része a Settings-ből adódik ezek alapján a pinto-ban nincs sok "settings script", 
+Összesítve a Pinto build ideje rövidebb, a Startup idejénél nincs különbség, a különbség nagy része a Settings-ből adódik ezek alapján a Pinto-ban nincs sok "settings script", 
 azonban jóval kisebb különbséggel, de a Configuration-ben pont az ellenkezőjét láthatjuk, így itt érdemes megvizsgálni, hogy ezt mi okozza.
 A Configuration idejébe a build plugins, build scripts végrehajtása, projekt konfigurálása és a feladat végrehajtási terv elkészítése számít bele, a pluginokat végignézve a projektben 14 plugin tallható, ezek egy része már az általunk hozzáadott pluginok (jacoco, com.gradle.enterprise...), ezek idejét (Settings+Configuration) megvizsgálva látható, hogy ebből a plugin-okra fordított szinte egész időt az ezek megállapításához használt Gradle Enterprise okozza, így ezt nem érdemes használni, ha nem szükséges.
 
@@ -57,7 +58,7 @@ Még a Task execution-t érdemes jobban megvizsgálnunk, itt azt láthatjuk, hog
 
 ### Tesztek
 
-Először a teljesítményét a tesztek segítségével néztem meg. (https://scans.gradle.com/s/gv4xghc7mxa2m/tests)
+A futtatás teljesítményét először a tesztek segítségével néztem meg. (https://scans.gradle.com/s/gv4xghc7mxa2m/tests)
 A legtöbb teszt pár ezredmásodpercen belül lefutott, így közöttük nem volt nagy különbség és érdemben nem is lehetett vizsgálni, azonban voltak ehhez képest kiemelkedőbb értékek is ezeket próbáltam vizsgálni.
 
 Az RDFMapperTests lefutási idejeit végignézve megfigyelhető, hogy milyen típusok hatására mekkora időbeli különbségek vannak a különböző típusok és adatok írása/olvasása között.
